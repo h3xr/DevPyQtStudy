@@ -44,33 +44,85 @@ class Window(QtWidgets.QWidget):
 
         :return: None
         """
+        self.screen_width = QtWidgets.QApplication.screenAt(self.pos()).size().width()
+        self.screen_height = QtWidgets.QApplication.screenAt(self.pos()).size().height()
 
         self.ui.pushButtonGetData.clicked.connect(self.onPushButtonGetDataClicked)
+        self.ui.pushButtonCenter.clicked.connect(self.onPushButtonPositionCenter)
+        self.ui.pushButtonLB.clicked.connect(self.onPushButtonPositionLB)
+        self.ui.pushButtonLT.clicked.connect(self.onPushButtonPositionLT)
+        self.ui.pushButtonRB.clicked.connect(self.onPushButtonPositionRB)
+        self.ui.pushButtonRT.clicked.connect(self.onPushButtonPositionRT)
+        self.ui.pushButtonMoveCoords.clicked.connect(self.onPushButtonPositionXY)
+        self.ui.spinBoxX.valueChanged.connect(self.onSpinBoxXValue)
+        self.ui.spinBoxY.valueChanged.connect(self.onSpinBoxYValue)
 
     def onPushButtonGetDataClicked(self) -> None:
-        self.ui.plainTextEdit.setPlainText(time.ctime())
+        screens_count = QtWidgets.QApplication.screens()
+        self.ui.plainTextEdit.appendPlainText("-" * 30) 
+        self.ui.plainTextEdit.appendPlainText(time.ctime())
         self.ui.plainTextEdit.appendPlainText("Количество мониторов: " +
-                                              str(len(QtWidgets.QApplication.screens())))
-        self.ui.plainTextEdit.appendPlainText("Название текущего окна: " +
-                                              self.window().windowTitle())
+                                              str(len(screens_count)))
+        self.ui.plainTextEdit.appendPlainText("Название основного окна: " +
+                                              QtWidgets.QApplication.primaryScreen().name())
+        for screen in screens_count:
+            self.ui.plainTextEdit.appendPlainText("Разрешение экрана: " + screen.name() + ": " +
+                                                  "Ширина - " + str(screen.size().width()) +
+                                                  " Высота - " + str(screen.size().height()))
 
         self.ui.plainTextEdit.appendPlainText("Ширина текущего окна: " +
                                               str(self.window().frameGeometry().width()))
         self.ui.plainTextEdit.appendPlainText("Высота текущего окна: " +
                                               str(self.window().frameGeometry().height()))
+        self.ui.plainTextEdit.appendPlainText("Окно находится на экране: " +
+                                              str(QtWidgets.QApplication.screenAt(self.pos()).name()))
+        self.ui.plainTextEdit.appendPlainText("Минимальные размеры окна: " +
+                                              "Ширина - " + str(self.window().minimumWidth()) +
+                                              " Высота - " + str(self.window().minimumHeight()))
+        self.ui.plainTextEdit.appendPlainText("Текущее положение: " +
+                                              "x = " + str(self.pos().x()) +
+                                              " y = " + str(self.pos().y()))
+        self.ui.plainTextEdit.appendPlainText("Центр приложения: " +
+                                              "x = " + str(self.pos().x() + self.width()/2) +
+                                              " y = " + str(self.pos().y() + self.height()/2))
+        self.ui.plainTextEdit.appendPlainText("-" * 30)
 
+    def onPushButtonPositionCenter(self):
+        self.move(int(self.screen_width/2 - self.width()/2),
+                  int(self.screen_height/2 - self.height()/2))
 
-        l# QtCore.QSize.width()
+    def onPushButtonPositionLB(self):
+        self.move(0, self.screen_height - self.height())
 
-        print()
+    def onPushButtonPositionLT(self):
+        self.move(0, 0)
 
+    def onPushButtonPositionRB(self):
+        self.move(self.screen_width - self.width(), self.screen_height - self.height())
 
+    def onPushButtonPositionRT(self):
+        self.move(self.screen_width - self.width(), 0)
 
-    # * Разрешение экрана
-    # * На каком экране окно находится
-    # * Размеры окна
+    def onPushButtonPositionXY(self):
+        self.move(self.ui.spinBoxX.value(), self.ui.spinBoxY.value())
 
+    def showEvent(self, event: QtGui.QShowEvent) -> None:
+        self.ui.plainTextEdit.appendPlainText(time.ctime() + " - отображение окна")
 
+    def hideEvent(self, event: QtGui.QHideEvent) -> None:
+        self.ui.plainTextEdit.appendPlainText(time.ctime() + " - сворачивание окна")
+
+    def moveEvent(self, event: QtGui.QMoveEvent) -> None:
+        print("x = " + str(event.pos().x()) + " y = " + str(event.pos().y()))
+
+    def resizeEvent(self, event: QtGui.QResizeEvent) -> None:
+        print("w = " + str(event.size().width()) + " h = " + str(event.size().height()))
+
+    def onSpinBoxXValue(self):
+        self.move(self.ui.spinBoxX.value(), self.ui.spinBoxY.value())
+
+    def onSpinBoxYValue(self):
+        self.move(self.ui.spinBoxX.value(), self.ui.spinBoxY.value())
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication()
