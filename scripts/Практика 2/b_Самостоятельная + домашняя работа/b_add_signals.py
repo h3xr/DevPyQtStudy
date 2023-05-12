@@ -9,6 +9,7 @@ class Window(QtWidgets.QWidget):
         super().__init__(parent)
 
         self.initUi()
+        self.initSignals()
 
     def initUi(self) -> None:
         """
@@ -130,22 +131,41 @@ class Window(QtWidgets.QWidget):
 
         :return: None
         """
-
-        self.pushButtonComboBox  # TODO подключить слот для вывода текста из comboBox в plainTextEditLog при нажатии на кнопку
+        # TODO подключить слот для вывода текста из comboBox в plainTextEditLog при нажатии на кнопку
+        self.pushButtonComboBox.clicked.connect(self.onPushButtonComboBoxClicked)
         self.pushButtonLineEdit.clicked.connect(self.onPushButtonLineEditClicked)
-        self.pushButtonTextEdit  # TODO подключить слот для вывода текста из textEdit в plainTextEditLog при нажатии на кнопку
-        self.pushButtonPlainTextEdit  # TODO подключить слот для вывода текста из plaineTextEdit в plainTextEditLog при нажатии на кнопку
-        self.pushButtonSpinBox  # TODO подключить слот для вывода значения из spinBox в plainTextEditLog при нажатии на кнопку
-        self.pushButtonDoubleSpinBox  # TODO подключить слот для вывода значения из doubleSpinBox в plainTextEditLog при нажатии на кнопку
-        self.pushButtonTimeEdit  # TODO подключить слот для вывода времени из timeEdit в plainTextEditLog при нажатии на кнопку
-        self.pushButtonDateTimeEdit  # TODO подключить слот для вывода времени из dateTimeEdit в plainTextEditLog при нажатии на кнопку
-        self.pushButtonClearLog  # TODO подключить слот для очистки plainTextEditLog при нажатии на кнопку
 
-        self.comboBox  # TODO подключить слот для вывода текста в plainTextEditLog при изменении выбранного элемента в comboBox
-        self.spinBox  # TODO подключить слот для вывода значения в plainTextEditLog при изменении значения в spinBox
-        self.dateTimeEdit  # TODO подключить слот для вывода датывремени в plainTextEditLog при изменении датывремени в dateTimeEdit
+        # TODO подключить слот для вывода текста из textEdit в plainTextEditLog при нажатии на кнопку
+        self.pushButtonTextEdit.clicked.connect(self.onPushButtonTextEditClicked)
 
-    # slots --------------------------------------------------------------
+        # TODO подключить слот для вывода текста из plainTextEdit в plainTextEditLog при нажатии на кнопку
+        self.pushButtonPlainTextEdit.clicked.connect(self.onPushButtonPlainTextEditClicked)
+
+        # TODO подключить слот для вывода значения из spinBox в plainTextEditLog при нажатии на кнопку
+        self.pushButtonSpinBox.clicked.connect(self.onPushButtonSpinBoxClicked)
+
+        # TODO подключить слот для вывода значения из doubleSpinBox в plainTextEditLog при нажатии на кнопку
+        self.pushButtonDoubleSpinBox.clicked.connect(self.onPushButtonDoubleSpinBoxClicked)
+
+        # TODO подключить слот для вывода времени из timeEdit в plainTextEditLog при нажатии на кнопку
+        self.pushButtonTimeEdit.clicked.connect(self.onPushButtonTimeEditClicked)
+
+        # TODO подключить слот для вывода времени из dateTimeEdit в plainTextEditLog при нажатии на кнопку
+        self.pushButtonDateTimeEdit.clicked.connect(self.onPushButtonDateTimeEditClicked)
+
+        # TODO подключить слот для очистки plainTextEditLog при нажатии на кнопку
+        self.pushButtonClearLog.clicked.connect(self.onPushButtonClearLogClicked)
+
+        # TODO подключить слот для вывода текста в plainTextEditLog при изменении выбранного элемента в comboBox
+        self.comboBox.currentIndexChanged.connect(self.onCurrentIndexChanged)
+
+        # TODO подключить слот для вывода значения в plainTextEditLog при изменении значения в spinBox
+        self.spinBox.valueChanged.connect(self.onSpinBoxValueChanged)
+
+        # TODO подключить слот для вывода даты и времени в plainTextEditLog при изменении в dateTimeEdit
+        self.dateTimeEdit.dateTimeChanged.connect(self.onDateTimeEditChange)
+
+        # slots --------------------------------------------------------------
     def onPushButtonLineEditClicked(self) -> None:
         """
         Обработка сигнала clicked для кнопки pushButtonLineEdit
@@ -156,6 +176,93 @@ class Window(QtWidgets.QWidget):
         self.plainTextEditLog.setPlainText(self.lineEdit.text())
 
     # TODO Самостоятельная реализация слотов для сигналов
+    def onPushButtonComboBoxClicked(self) -> None:
+        """
+        Обработка сигнала clicked для кнопки pushButtonComboBox
+
+        :return: None
+        """
+        self.plainTextEditLog.setPlainText(self.comboBox.currentText())
+
+    def onPushButtonTextEditClicked(self) -> None:
+        """
+        Обработка сигнала clicked для кнопки pushButtonTextEdit
+
+        :return: None
+        """
+        self.plainTextEditLog.setPlainText(self.textEdit.toPlainText())
+
+    def onPushButtonPlainTextEditClicked(self) -> None:
+        """
+        Обработка сигнала clicked для кнопки pushButtonPlainTextEdit
+
+        :return: None
+        """
+        self.plainTextEditLog.setPlainText(self.plainTextEdit.toPlainText())
+
+    def onPushButtonSpinBoxClicked(self) -> None:
+        """
+        Обработка сигнала clicked для кнопки pushButtonSpinBox
+
+        :return: None
+        """
+        self.plainTextEditLog.setPlainText(self.spinBox.text())
+
+    def onPushButtonDoubleSpinBoxClicked(self) -> None:
+        """
+        Обработка сигнала clicked для кнопки pushButtonDoubleSpinBoxClicked
+
+        :return: None
+        """
+        self.plainTextEditLog.setPlainText(self.doubleSpinBox.text())
+
+    def onPushButtonTimeEditClicked(self) -> None:
+        """
+        Обработка сигнала clicked для кнопки pushButtonTimeEditClicked
+
+        :return: None
+        """
+        self.plainTextEditLog.setPlainText(self.timeEdit.text())
+
+    def onPushButtonDateTimeEditClicked(self) -> None:
+        """
+        Обработка сигнала clicked для кнопки pushButtonDateTimeEditClicked
+
+        :return: None
+        """
+        self.plainTextEditLog.setPlainText(self.dateTimeEdit.text())
+
+    def onPushButtonClearLogClicked(self) -> None:
+        """
+        Обработка сигнала clicked для кнопки pushButtonClearLogClicked
+
+        :return: None
+        """
+        self.plainTextEditLog.clear()
+
+    def onCurrentIndexChanged(self) -> None:
+        """
+        Обработка сигнала clicked для кнопки comboBox.currentIndexChanged
+
+        :return: None
+        """
+        self.plainTextEditLog.setPlainText(self.comboBox.currentText())
+
+    def onSpinBoxValueChanged(self) -> None:
+        """
+        Обработка сигнала clicked для кнопки spinBox.currentValueChanged
+
+        :return: None
+        """
+        self.plainTextEditLog.setPlainText(self.spinBox.text())
+
+    def onDateTimeEditChange(self) -> None:
+        """
+        Обработка сигнала clicked для кнопки dateTimeEditChange
+
+        :return: None
+        """
+        self.plainTextEditLog.setPlainText(self.dateTimeEdit.text())
 
 
 if __name__ == "__main__":
