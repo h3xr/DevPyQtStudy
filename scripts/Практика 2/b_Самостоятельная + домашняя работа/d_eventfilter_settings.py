@@ -48,6 +48,7 @@ class Window(QtWidgets.QWidget):
             elif key == 45:
                 self.ui.dial.setValue(self.ui.dial.value() - 1)
             print(self.ui.dial.value())
+        return super(Window, self).eventFilter(watched, event)
 
     def initSignals(self):
         self.ui.dial.valueChanged.connect(self.onDialValueChanged)
