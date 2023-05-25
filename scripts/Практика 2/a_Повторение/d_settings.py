@@ -8,13 +8,34 @@
 в него сохранённый текст
 """
 
-from PySide6 import QtWidgets
+from PySide6 import QtWidgets, QtCore, QtGui
 
 
 class Window(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        self.settings = QtCore.QSettings("MyDataCard")
+
+        self.initUI()
+        self.loadData()
+        self.initSignals()
+
+    def initUI(self):
+        self.plainTextEdit = QtWidgets.QPlainTextEdit()
+        layout = QtWidgets.QVBoxLayout()
+        layout.addWidget(self.plainTextEdit)
+        self.setLayout(layout)
+
+    def loadData(self):
+        self.plainTextEdit.setPlainText(self.settings.value("Text", ""))
+
+    def initSignals(self):
+        pass
+
+    def closeEvent(self, event: QtGui.QCloseEvent) -> None:
+        self.settings.setValue("Text", self.plainTextEdit.toPlainText())
 
 
 if __name__ == "__main__":

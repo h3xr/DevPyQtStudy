@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="logo">
+    <file>icons8-джейк-16.png</file>
+  </qresource>
+</RCC>
